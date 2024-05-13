@@ -13,11 +13,15 @@ public class EdgeDisplayObject : MonoBehaviour
     public Color DefaultColor = Color.black;
     public Color SelectedColor = Color.red;
 
+    [SerializeField, ReadOnlyInspector]
+    private float _weight;
+
     private LineRenderer _lineRenderer;
 
-    public void Initialize(EdgeObjectData data, Vector2 firstPosition, Vector2 secondPosition)
+    public void Initialize(EdgeObjectData data, float weight, Vector2 firstPosition, Vector2 secondPosition)
     {
         Data = data;
+        _weight = weight;
         name = $"Edge{data.FirstVertexID}{data.SecondVertexID}";
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.SetPosition(0, firstPosition);

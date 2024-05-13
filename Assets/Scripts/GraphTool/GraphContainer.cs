@@ -132,7 +132,7 @@ public class GraphContainer : MonoBehaviour
             _graph.AddEdge(firstVertex.Data.ID, secondVertex.Data.ID, weight);
 
             var newEdge = Instantiate(_edgePrefab, transform);
-            newEdge.Initialize(data, firstVertex.Data.Position, secondVertex.Data.Position);
+            newEdge.Initialize(data, weight, firstVertex.Data.Position, secondVertex.Data.Position);
             _edges.Add(newEdge);
             return newEdge;
         }

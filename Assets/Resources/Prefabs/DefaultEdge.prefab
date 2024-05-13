@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 888623740298686476}
-  - component: {fileID: 458281540254213303}
   - component: {fileID: 2455654458171294512}
+  - component: {fileID: 458281540254213303}
   m_Layer: 0
   m_Name: DefaultEdge
   m_TagString: Untagged
@@ -33,6 +33,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2455654458171294512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5302033986580107010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4d7faa8b3412dd4a9b86d8e7c02fa75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LineWidth: 0.125
+  DefaultColor: {r: 0, g: 0, b: 0, a: 1}
+  SelectedColor: {r: 1, g: 0, b: 0, a: 1}
+  _weight: 0
 --- !u!120 &458281540254213303
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -132,18 +148,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &2455654458171294512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5302033986580107010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d7faa8b3412dd4a9b86d8e7c02fa75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LineWidth: 0.125
-  DefaultColor: {r: 0, g: 0, b: 0, a: 1}
-  SelectedColor: {r: 1, g: 0, b: 0, a: 1}
