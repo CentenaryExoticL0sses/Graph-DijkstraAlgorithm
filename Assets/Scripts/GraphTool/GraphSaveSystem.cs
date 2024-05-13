@@ -6,11 +6,13 @@ public class GraphSaveSystem : MonoBehaviour
 {
     [SerializeField] private GraphContainer _graphContainer;
 
-    private readonly string _saveFolder = Application.dataPath + "/SavedGraphs/";
+    private string _saveFolder;
 
     private void Awake()
     {
-        if(!Directory.Exists(_saveFolder))
+        _saveFolder = Application.dataPath + "/SavedGraphs/";
+
+        if (!Directory.Exists(_saveFolder))
         {
             Directory.CreateDirectory(_saveFolder);
         }

@@ -64,13 +64,15 @@ public class GraphContainer : MonoBehaviour
         _graph = new Graph();
         _vertices = new List<VertexDisplayObject>();
         _edges = new List<EdgeDisplayObject>();
-        if(_vertexPrefab == null)
+        if (_vertexPrefab == null)
         {
-            _vertexPrefab = Resources.Load("DeafultVertex") as VertexDisplayObject;
+            _vertexPrefab = Resources.Load<VertexDisplayObject>("Prefabs/DefaultVertex");
+            Debug.Log(_vertexPrefab);
         }
         if (_edgePrefab == null)
         {
-            _edgePrefab = Resources.Load("DefaultEdge") as EdgeDisplayObject;
+            _edgePrefab = Resources.Load<EdgeDisplayObject>("Prefabs/DefaultEdge");
+            Debug.Log(_edgePrefab);
         }
     }
 
