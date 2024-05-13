@@ -1,0 +1,54 @@
+{
+    "name": "GraphActions",
+    "maps": [
+        {
+            "name": "Tool",
+            "id": "a05c0400-9c36-46d5-a0a3-f24d07175e50",
+            "actions": [
+                {
+                    "name": "MouseAction",
+                    "type": "Button",
+                    "id": "535d6709-c328-4f81-854a-9df385c3a358",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "ae348bbd-52ae-48ef-b0f0-f0f4c0d48a2b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4d95187a-2ccb-4592-8c2b-2b712307a948",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a2eae27-8e28-4d70-a86e-545723e503ab",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
