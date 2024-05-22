@@ -82,7 +82,7 @@ public class GraphContainer : MonoBehaviour
 
         foreach (var vertex in vertices)
         {
-            CreateVertex(vertex.ID, vertex.Position);
+            CreateVertex(vertex);
         }
         foreach(var edge in edges)
         {
@@ -95,15 +95,15 @@ public class GraphContainer : MonoBehaviour
     public VertexDisplayObject CreateVertex(Vector2 position)
     {
         int id = _graph.Vertices.Count;
-        return CreateVertex(id, position);
+        var data = new VertexObjectData(id, position);
+        return CreateVertex(data);
     }
 
-    public VertexDisplayObject CreateVertex(int id, Vector2 position)
+    public VertexDisplayObject CreateVertex(VertexObjectData data)
     {
-        _graph.AddVertex(id);
-        var data = new VertexObjectData(id, position);
+        _graph.AddVertex(data.ID);
 
-        var newVertex = Instantiate(_vertexPrefab, position, Quaternion.identity, transform);
+        var newVertex = Instantiate(_vertexPrefab, data.Position, Quaternion.identity, transform);
         newVertex.Initialize(data);
         _vertices.Add(newVertex);
         return newVertex;
