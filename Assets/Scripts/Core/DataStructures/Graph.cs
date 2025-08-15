@@ -1,40 +1,41 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GraphProject.Core.DataStructures
 {
     public class Graph
     {
-        public List<Vertex> Vertices { get; }
+        public List<Vertex> Vertices => _vertices.Values.ToList();
+
+        private readonly Dictionary<int, Vertex> _vertices;
 
         public Graph()
         {
-            Vertices = new List<Vertex>();
+            _vertices = new Dictionary<int, Vertex>();
         }
 
         public Vertex AddVertex(int id)
         {
+            if (_vertices.ContainsKey(id))
+            {
+                return _vertices[id];
+            }
             Vertex newVertex = new Vertex(id);
-            Vertices.Add(newVertex);
+            _vertices.Add(id, newVertex);
             return newVertex;
         }
 
         public Vertex FindVertex(int id)
         {
-            foreach (Vertex vertex in Vertices)
-            {
-                if (vertex.ID == id)
-                {
-                    return vertex;
-                }
-            }
-
-            return null;
+            _vertices.TryGetValue(id, out var vertex);
+            return vertex;
         }
 
         public void AddEdge(int firstID, int secondID, float weight)
         {
             Vertex firstVertex = FindVertex(firstID);
             Vertex secondVertex = FindVertex(secondID);
+
             if (firstVertex != null && secondVertex != null)
             {
                 firstVertex.AddEdge(secondVertex, weight);
