@@ -29,21 +29,21 @@ namespace GraphProject.Services
         public void SaveGraph()
         {
             // Используем методы контроллера для получения визуальных объектов.
-            if (_graphController.GetAllVertexObjects().Count > 0)
+            if (_graphController.VertexObjects.Count > 0)
             {
-                List<VertexObjectData> newVertexData = new List<VertexObjectData>();
-                List<EdgeObjectData> newEdgeData = new List<EdgeObjectData>();
+                List<VertexObjectData> newVertexData = new();
+                List<EdgeObjectData> newEdgeData = new();
 
-                foreach (var vertex in _graphController.GetAllVertexObjects())
+                foreach (var vertex in _graphController.VertexObjects.Values)
                 {
                     newVertexData.Add(vertex.Data);
                 }
-                foreach (var edge in _graphController.GetAllEdgeObjects())
+                foreach (var edge in _graphController.EdgeObjects)
                 {
                     newEdgeData.Add(edge.Data);
                 }
 
-                GraphData graphData = new GraphData()
+                GraphData graphData = new()
                 {
                     VertexData = newVertexData,
                     EdgeData = newEdgeData

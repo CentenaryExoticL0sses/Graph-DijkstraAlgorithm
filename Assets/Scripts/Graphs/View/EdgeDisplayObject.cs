@@ -10,17 +10,17 @@ namespace GraphProject.Graphs.View
     [RequireComponent(typeof(LineRenderer))]
     public class EdgeDisplayObject : MonoBehaviour
     {
+        [Header("Настройки")]
+        [SerializeField] private Color _defaultColor = Color.black;
+        [SerializeField] private Color _selectedColor = Color.red;
+        [SerializeField, Range(0f, 1f)] private float _lineWidth = 0.125f;
+
+        [Header("Отладка")]
+        [SerializeField, ReadOnlyInspector] private float _weight;
+
         public EdgeObjectData Data { get; private set; }
         public bool IsSelected { get; private set; }
 
-        [Range(0f, 1f)]
-        public float LineWidth = 0.125f;
-
-        public Color DefaultColor = Color.black;
-        public Color SelectedColor = Color.red;
-
-        [SerializeField, ReadOnlyInspector]
-        private float _weight;
 
         private LineRenderer _lineRenderer;
 
@@ -32,22 +32,22 @@ namespace GraphProject.Graphs.View
             _lineRenderer = GetComponent<LineRenderer>();
             _lineRenderer.SetPosition(0, firstPosition);
             _lineRenderer.SetPosition(1, secondPosition);
-            _lineRenderer.startWidth = LineWidth;
-            _lineRenderer.endWidth = LineWidth;
-            SetColor(DefaultColor);
+            _lineRenderer.startWidth = _lineWidth;
+            _lineRenderer.endWidth = _lineWidth;
+            SetColor(_defaultColor);
             IsSelected = false;
         }
 
         public void Select()
         {
             IsSelected = true;
-            SetColor(SelectedColor);
+            SetColor(_selectedColor);
         }
 
         public void Deselect()
         {
             IsSelected = false;
-            SetColor(DefaultColor);
+            SetColor(_defaultColor);
         }
 
         private void SetColor(Color color)

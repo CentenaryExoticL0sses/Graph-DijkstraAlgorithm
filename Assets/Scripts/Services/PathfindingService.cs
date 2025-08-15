@@ -20,7 +20,7 @@ namespace GraphProject.Services
         /// <returns>Список ID вершин, составляющих путь.</returns>
         public List<int> FindShortestPath(Graph graph, int startID, int finishID)
         {
-            Dijkstra dijkstra = new Dijkstra(graph);
+            Dijkstra dijkstra = new(graph);
             return dijkstra.FindShortestPath(startID, finishID);
         }
     }

@@ -26,25 +26,25 @@ namespace GraphProject.Tools
         private void OnEnable()
         {
             _actions = new GraphActions();
-            _actions.Tool.MouseAction.performed += GraphMouseAction;
-            _actions.Tool.Cancel.performed += CancelMode;
+            _actions.Tool.MouseAction.performed += OnMouseAction;
+            _actions.Tool.Cancel.performed += OnCancel;
             _actions.Tool.Enable();
         }
 
         private void OnDisable()
         {
-            _actions.Tool.MouseAction.performed -= GraphMouseAction;
-            _actions.Tool.Cancel.performed -= CancelMode;
+            _actions.Tool.MouseAction.performed -= OnMouseAction;
+            _actions.Tool.Cancel.performed -= OnCancel;
             _actions.Tool.Disable();
         }
 
-        private void CancelMode(InputAction.CallbackContext context)
+        private void OnCancel(InputAction.CallbackContext context)
         {
             CancelAnyState();
         }
 
         //Выполнение функции выбранного режима по нажатию ЛКМ
-        private void GraphMouseAction(InputAction.CallbackContext context)
+        private void OnMouseAction(InputAction.CallbackContext context)
         {
             if (_isOverUI)
                 return;
@@ -61,33 +61,31 @@ namespace GraphProject.Tools
                 _isOverUI = EventSystem.current.IsPointerOverGameObject();
         }
 
-        //Выбор режима работы инструмента
-        public void CreateVertex()
-        {
-            CancelAnyState();
-            _creationState = new VertexCreationState(_graphController, _partSelector);
-        }
+        /// <summary>
+        /// Активация режима создания вершин.
+        /// </summary>
+        public void CreateVertex() => SetState(new VertexCreationState(_graphController, _partSelector));
 
-        public void CreateEdge()
-        {
-            CancelAnyState();
-            _creationState = new EdgeCreationState(_graphController, _partSelector);
-        }
+        /// <summary>
+        /// Активация режима создания рёбер.
+        /// </summary>
+        public void CreateEdge() => SetState(new EdgeCreationState(_graphController, _partSelector));
 
-        public void FindPath()
-        {
-            CancelAnyState();
-            _creationState = new PathFindingState(_graphController, _partSelector);
-        }
+        /// <summary>
+        /// Активация режима поиска пути.
+        /// </summary>
+        public void FindPath() => SetState(new PathFindingState(_graphController, _partSelector));
 
-        //Сброс режима работы инструмента
-        public void CancelAnyState()
+        /// <summary>
+        /// Сброс режима работы инструмента
+        /// </summary>
+        public void CancelAnyState() => SetState(null);
+
+        private void SetState(ICreationState state)
         {
-            if (_creationState != null)
-            {
-                _creationState.EndState();
-                _creationState = null;
-            }
+            _creationState?.ExitState();
+            _creationState = state;
+            _creationState?.EnterState();
         }
     }
 }

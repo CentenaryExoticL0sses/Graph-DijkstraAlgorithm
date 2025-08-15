@@ -14,6 +14,8 @@ namespace GraphProject.Tools.States
             _graphController = controller;
         }
 
+        public void EnterState() { }
+
         public void OnAction(Vector2 position)
         {
             if (_partSelector.SelectedVertices.Count > 0)
@@ -24,7 +26,7 @@ namespace GraphProject.Tools.States
             _partSelector.SelectVertex(vertex);
         }
 
-        public void EndState()
+        public void ExitState()
         {
             _partSelector?.DeselectVertices();
         }

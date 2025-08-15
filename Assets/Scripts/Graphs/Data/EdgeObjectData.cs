@@ -1,18 +1,16 @@
-using System;
+п»їusing System;
 using UnityEngine;
 
 namespace GraphProject.Graphs.Data
 {
     /// <summary>
-    /// Структура для хранения данных об объекте ребра
+    /// РЎС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РґР°РЅРЅС‹С… РѕР± РѕР±СЉРµРєС‚Рµ СЂРµР±СЂР°
     /// </summary>
     [Serializable]
     public struct EdgeObjectData
     {
-        [field: SerializeField]
-        public int FirstVertexID { get; private set; }
-        [field: SerializeField]
-        public int SecondVertexID { get; private set; }
+        [field: SerializeField] public int FirstVertexID { get; private set; }
+        [field: SerializeField]public int SecondVertexID { get; private set; }
 
         public EdgeObjectData(int firstID, int secondID)
         {

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using UnityEngine;
 using GraphProject.Graphs.Data;
 using GraphProject.Graphs.View;
@@ -7,33 +7,38 @@ using GraphProject.Services;
 namespace GraphProject.Graphs
 {
     /// <summary>
-    /// Контроллер графа. Является точкой входа для всех операций с графом.
-    /// Связывает модель (GraphModel) и представление (GraphView).
+    /// РљРѕРЅС‚СЂРѕР»Р»РµСЂ РіСЂР°С„Р°. РЇРІР»СЏРµС‚СЃСЏ С‚РѕС‡РєРѕР№ РІС…РѕРґР° РґР»СЏ РІСЃРµС… РѕРїРµСЂР°С†РёР№ СЃ РіСЂР°С„РѕРј.
+    /// РЎРІСЏР·С‹РІР°РµС‚ РјРѕРґРµР»СЊ (GraphModel) Рё РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ (GraphView).
     /// </summary>
     public class GraphController : MonoBehaviour
     {
-        [SerializeField] private GraphView _view; // Ссылка на представление графа
+        [Header("РљРѕРјРїРѕРЅРµРЅС‚С‹")]
+        [SerializeField] private GraphView _view; // РЎСЃС‹Р»РєР° РЅР° РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ РіСЂР°С„Р°
+
+        public IReadOnlyDictionary<int, VertexDisplayObject> VertexObjects => _view.VertexObjects;
+        public IReadOnlyList<EdgeDisplayObject> EdgeObjects => _view.EdgeObjects;
 
         public GraphModel Model { get; private set; }
+
         private PathfindingService _pathfindingService;
 
         /// <summary>
-        /// Инициализация контроллера. Вызывается из AppManager.
+        /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅС‚СЂРѕР»Р»РµСЂР°. Р’С‹Р·С‹РІР°РµС‚СЃСЏ РёР· AppManager.
         /// </summary>
         public void Initialize()
         {
             Model = new GraphModel();
             _pathfindingService = new PathfindingService();
 
-            // Передаем модель в представление, чтобы оно могло подписаться на события.
+            // РџРµСЂРµРґР°РµРј РјРѕРґРµР»СЊ РІ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ, С‡С‚РѕР±С‹ РѕРЅРѕ РјРѕРіР»Рѕ РїРѕРґРїРёСЃР°С‚СЊСЃСЏ РЅР° СЃРѕР±С‹С‚РёСЏ.
             _view.Initialize(Model);
         }
 
         /// <summary>
-        /// Создание новой вершины.
+        /// РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ РІРµСЂС€РёРЅС‹.
         /// </summary>
-        /// <param name="position">Позиция для новой вершины.</param>
-        /// <returns>Визуальный объект созданной вершины.</returns>
+        /// <param name="position">РџРѕР·РёС†РёСЏ РґР»СЏ РЅРѕРІРѕР№ РІРµСЂС€РёРЅС‹.</param>
+        /// <returns>Р’РёР·СѓР°Р»СЊРЅС‹Р№ РѕР±СЉРµРєС‚ СЃРѕР·РґР°РЅРЅРѕР№ РІРµСЂС€РёРЅС‹.</returns>
         public VertexDisplayObject CreateVertex(Vector2 position)
         {
             var vertexData = Model.AddVertex(position);
@@ -41,24 +46,24 @@ namespace GraphProject.Graphs
         }
 
         /// <summary>
-        /// Создание нового ребра.
+        /// РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЂРµР±СЂР°.
         /// </summary>
-        /// <param name="firstID">ID первой вершины.</param>
-        /// <param name="secondID">ID второй вершины.</param>
-        /// <returns>Визуальный объект созданного ребра.</returns>
+        /// <param name="firstID">ID РїРµСЂРІРѕР№ РІРµСЂС€РёРЅС‹.</param>
+        /// <param name="secondID">ID РІС‚РѕСЂРѕР№ РІРµСЂС€РёРЅС‹.</param>
+        /// <returns>Р’РёР·СѓР°Р»СЊРЅС‹Р№ РѕР±СЉРµРєС‚ СЃРѕР·РґР°РЅРЅРѕРіРѕ СЂРµР±СЂР°.</returns>
         public EdgeDisplayObject CreateEdge(int firstID, int secondID)
         {
             var edgeData = Model.AddEdge(firstID, secondID);
             if (edgeData.Equals(default(EdgeObjectData)))
             {
-                // Если ребро не было создано (уже существует), возвращаем существующий объект.
+                // Р•СЃР»Рё СЂРµР±СЂРѕ РЅРµ Р±С‹Р»Рѕ СЃРѕР·РґР°РЅРѕ (СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚), РІРѕР·РІСЂР°С‰Р°РµРј СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ РѕР±СЉРµРєС‚.
                 return GetEdgeObject(firstID, secondID);
             }
             return _view.GetEdgeObject(edgeData.FirstVertexID, edgeData.SecondVertexID);
         }
 
         /// <summary>
-        /// Поиск кратчайшего пути.
+        /// РџРѕРёСЃРє РєСЂР°С‚С‡Р°Р№С€РµРіРѕ РїСѓС‚Рё.
         /// </summary>
         public List<int> FindShortestPath(int firstID, int secondID)
         {
@@ -66,7 +71,7 @@ namespace GraphProject.Graphs
         }
 
         /// <summary>
-        /// Очистка графа.
+        /// РћС‡РёСЃС‚РєР° РіСЂР°С„Р°.
         /// </summary>
         public void ClearGraph()
         {
@@ -74,7 +79,7 @@ namespace GraphProject.Graphs
         }
 
         /// <summary>
-        /// Загрузка графа из данных.
+        /// Р—Р°РіСЂСѓР·РєР° РіСЂР°С„Р° РёР· РґР°РЅРЅС‹С….
         /// </summary>
         public void LoadGraph(List<VertexObjectData> vertices, List<EdgeObjectData> edges)
         {
@@ -82,25 +87,21 @@ namespace GraphProject.Graphs
 
             foreach (var vertexData in vertices)
             {
-                // Напрямую добавляем вершину в модель. Представление обновится автоматически по событию.
+                // РќР°РїСЂСЏРјСѓСЋ РґРѕР±Р°РІР»СЏРµРј РІРµСЂС€РёРЅСѓ РІ РјРѕРґРµР»СЊ. РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ РѕР±РЅРѕРІРёС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РїРѕ СЃРѕР±С‹С‚РёСЋ.
                 Model.AddVertex(vertexData.Position);
             }
 
             foreach (var edgeData in edges)
             {
-                // Напрямую добавляем ребро в модель.
+                // РќР°РїСЂСЏРјСѓСЋ РґРѕР±Р°РІР»СЏРµРј СЂРµР±СЂРѕ РІ РјРѕРґРµР»СЊ.
                 Model.AddEdge(edgeData.FirstVertexID, edgeData.SecondVertexID);
             }
         }
 
-        // Предоставляем доступ к методам View для внешних систем (например, GraphPartSelector)
+        // РџСЂРµРґРѕСЃС‚Р°РІР»СЏРµРј РґРѕСЃС‚СѓРї Рє РјРµС‚РѕРґР°Рј View РґР»СЏ РІРЅРµС€РЅРёС… СЃРёСЃС‚РµРј (РЅР°РїСЂРёРјРµСЂ, GraphPartSelector)
         public VertexDisplayObject GetVertexObject(int id) => _view.GetVertexObject(id);
 
         public EdgeDisplayObject GetEdgeObject(int firstID, int secondID) => _view.GetEdgeObject(firstID, secondID);
-
-        public IReadOnlyCollection<VertexDisplayObject> GetAllVertexObjects() => _view.GetAllVertexObjects();
-
-        public IReadOnlyList<EdgeDisplayObject> GetAllEdgeObjects() => _view.GetAllEdgeObjects();
 
     }
 }

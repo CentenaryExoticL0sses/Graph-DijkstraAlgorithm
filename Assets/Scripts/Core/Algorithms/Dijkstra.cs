@@ -13,6 +13,28 @@ namespace GraphProject.Core.Algorithms
             _graph = graph;
         }
 
+        public List<int> FindShortestPath(int startID, int finishID)
+        {
+            return FindShortestPath(_graph.FindVertex(startID), _graph.FindVertex(finishID));
+        }
+
+        public List<int> FindShortestPath(Vertex startVertex, Vertex finishVertex)
+        {
+            InitData();
+            VertexData first = GetVertexData(startVertex);
+            first.EdgesWeightSum = 0;
+            while (true)
+            {
+                VertexData current = FindUnvisitedVertexWithMinSum();
+                if (current == null)
+                {
+                    break;
+                }
+                SetSumToNextVertex(current);
+            }
+            return GetPath(startVertex, finishVertex);
+        }
+
         private void InitData()
         {
             _vertexData = new List<VertexData>();
@@ -34,7 +56,7 @@ namespace GraphProject.Core.Algorithms
             return null;
         }
 
-        public VertexData FindUnvisitedVertexWithMinSum()
+        private VertexData FindUnvisitedVertexWithMinSum()
         {
             float minValue = float.MaxValue;
             VertexData minVertexInfo = null;
@@ -47,28 +69,6 @@ namespace GraphProject.Core.Algorithms
                 }
             }
             return minVertexInfo;
-        }
-
-        public List<int> FindShortestPath(int startID, int finishID)
-        {
-            return FindShortestPath(_graph.FindVertex(startID), _graph.FindVertex(finishID));
-        }
-
-        public List<int> FindShortestPath(Vertex startVertex, Vertex finishVertex)
-        {
-            InitData();
-            VertexData first = GetVertexData(startVertex);
-            first.EdgesWeightSum = 0;
-            while (true)
-            {
-                VertexData current = FindUnvisitedVertexWithMinSum();
-                if (current == null)
-                {
-                    break;
-                }
-                SetSumToNextVertex(current);
-            }
-            return GetPath(startVertex, finishVertex);
         }
 
         private void SetSumToNextVertex(VertexData data)
@@ -98,6 +98,8 @@ namespace GraphProject.Core.Algorithms
 
                 path.Add(endVertex.ID);
             }
+            path.Reverse();
+
             return path;
         }
     }

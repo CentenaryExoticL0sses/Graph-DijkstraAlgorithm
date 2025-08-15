@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using GraphProject.Core.DataStructures;
 using GraphProject.Graphs.Data;
@@ -6,23 +6,26 @@ using GraphProject.Graphs.Data;
 namespace GraphProject.Graphs
 {
     /// <summary>
-    /// Модель данных графа. Хранит и управляет логической структурой графа.
-    /// Не зависит от Unity и визуального представления.
+    /// РњРѕРґРµР»СЊ РґР°РЅРЅС‹С… РіСЂР°С„Р°. РҐСЂР°РЅРёС‚ Рё СѓРїСЂР°РІР»СЏРµС‚ Р»РѕРіРёС‡РµСЃРєРѕР№ СЃС‚СЂСѓРєС‚СѓСЂРѕР№ РіСЂР°С„Р°.
+    /// РќРµ Р·Р°РІРёСЃРёС‚ РѕС‚ Unity Рё РІРёР·СѓР°Р»СЊРЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.
     /// </summary>
     public class GraphModel
     {
-        // События для уведомления об изменениях в графе.
-        // На них подпишется GraphView, чтобы обновить визуализацию.
         public event Action<VertexObjectData> OnVertexAdded;
+
         public event Action<EdgeObjectData, float> OnEdgeAdded;
+
         public event Action OnGraphCleared;
 
-        // Ссылка на сам логический граф.
+        public IReadOnlyDictionary<int, VertexObjectData> VertexData => _vertexData;
+        public IReadOnlyList<EdgeObjectData> EdgeData => _edgeData;
+
+        // РЎСЃС‹Р»РєР° РЅР° СЃР°Рј Р»РѕРіРёС‡РµСЃРєРёР№ РіСЂР°С„.
         public Graph Graph { get; private set; }
 
-        // Храним данные для визуализации вместе с логикой.
-        private readonly Dictionary<int, VertexObjectData> _vertexData = new Dictionary<int, VertexObjectData>();
-        private readonly List<EdgeObjectData> _edgeData = new List<EdgeObjectData>();
+        // РҐСЂР°РЅРёРј РґР°РЅРЅС‹Рµ РґР»СЏ РІРёР·СѓР°Р»РёР·Р°С†РёРё РІРјРµСЃС‚Рµ СЃ Р»РѕРіРёРєРѕР№.
+        private readonly Dictionary<int, VertexObjectData> _vertexData = new();
+        private readonly List<EdgeObjectData> _edgeData = new();
 
         public GraphModel()
         {
@@ -30,10 +33,10 @@ namespace GraphProject.Graphs
         }
 
         /// <summary>
-        /// Добавляет новую вершину в граф.
+        /// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІСѓСЋ РІРµСЂС€РёРЅСѓ РІ РіСЂР°С„.
         /// </summary>
-        /// <param name="position">Позиция для новой вершины.</param>
-        /// <returns>Данные о созданной вершине.</returns>
+        /// <param name="position">РџРѕР·РёС†РёСЏ РґР»СЏ РЅРѕРІРѕР№ РІРµСЂС€РёРЅС‹.</param>
+        /// <returns>Р”Р°РЅРЅС‹Рµ Рѕ СЃРѕР·РґР°РЅРЅРѕР№ РІРµСЂС€РёРЅРµ.</returns>
         public VertexObjectData AddVertex(UnityEngine.Vector2 position)
         {
             int id = Graph.Vertices.Count;
@@ -42,29 +45,29 @@ namespace GraphProject.Graphs
             var data = new VertexObjectData(id, position);
             _vertexData[id] = data;
 
-            // Уведомляем подписчиков о добавлении новой вершины.
+            // РЈРІРµРґРѕРјР»СЏРµРј РїРѕРґРїРёСЃС‡РёРєРѕРІ Рѕ РґРѕР±Р°РІР»РµРЅРёРё РЅРѕРІРѕР№ РІРµСЂС€РёРЅС‹.
             OnVertexAdded?.Invoke(data);
             return data;
         }
 
         /// <summary>
-        /// Добавляет ребро между двумя вершинами.
+        /// Р”РѕР±Р°РІР»СЏРµС‚ СЂРµР±СЂРѕ РјРµР¶РґСѓ РґРІСѓРјСЏ РІРµСЂС€РёРЅР°РјРё.
         /// </summary>
-        /// <param name="firstID">ID первой вершины.</param>
-        /// <param name="secondID">ID второй вершины.</param>
-        /// <returns>Данные о созданном ребре или null, если ребро уже существует.</returns>
+        /// <param name="firstID">ID РїРµСЂРІРѕР№ РІРµСЂС€РёРЅС‹.</param>
+        /// <param name="secondID">ID РІС‚РѕСЂРѕР№ РІРµСЂС€РёРЅС‹.</param>
+        /// <returns>Р”Р°РЅРЅС‹Рµ Рѕ СЃРѕР·РґР°РЅРЅРѕРј СЂРµР±СЂРµ РёР»Рё null, РµСЃР»Рё СЂРµР±СЂРѕ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.</returns>
         public EdgeObjectData AddEdge(int firstID, int secondID)
         {
             if (Graph.FindVertex(firstID) == null || Graph.FindVertex(secondID) == null)
                 return default;
 
-            // Проверяем, существует ли уже такое ребро.
+            // РџСЂРѕРІРµСЂСЏРµРј, СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё СѓР¶Рµ С‚Р°РєРѕРµ СЂРµР±СЂРѕ.
             foreach (var edge in _edgeData)
             {
                 if (edge.FirstVertexID == firstID && edge.SecondVertexID == secondID ||
                     edge.FirstVertexID == secondID && edge.SecondVertexID == firstID)
                 {
-                    return default; // Ребро уже существует
+                    return default; // Р РµР±СЂРѕ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
                 }
             }
 
@@ -77,13 +80,13 @@ namespace GraphProject.Graphs
             var data = new EdgeObjectData(firstID, secondID);
             _edgeData.Add(data);
 
-            // Уведомляем подписчиков о добавлении нового ребра.
+            // РЈРІРµРґРѕРјР»СЏРµРј РїРѕРґРїРёСЃС‡РёРєРѕРІ Рѕ РґРѕР±Р°РІР»РµРЅРёРё РЅРѕРІРѕРіРѕ СЂРµР±СЂР°.
             OnEdgeAdded?.Invoke(data, weight);
             return data;
         }
 
         /// <summary>
-        /// Очищает все данные графа.
+        /// РћС‡РёС‰Р°РµС‚ РІСЃРµ РґР°РЅРЅС‹Рµ РіСЂР°С„Р°.
         /// </summary>
         public void Clear()
         {
@@ -91,11 +94,7 @@ namespace GraphProject.Graphs
             _vertexData.Clear();
             _edgeData.Clear();
 
-            // Уведомляем подписчиков о полной очистке графа.
             OnGraphCleared?.Invoke();
         }
-
-        public IReadOnlyDictionary<int, VertexObjectData> GetAllVertexData() => _vertexData;
-        public IReadOnlyList<EdgeObjectData> GetAllEdgeData() => _edgeData;
     }
 }

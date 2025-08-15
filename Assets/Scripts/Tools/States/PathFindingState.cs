@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using GraphProject.Graphs;
-using GraphProject.Graphs.View;
 
 namespace GraphProject.Tools.States
 {
@@ -15,6 +14,8 @@ namespace GraphProject.Tools.States
             _partSelector = selector;
             _graphController = controller;
         }
+
+        public void EnterState() { }
 
         public void OnAction(Vector2 position)
         {
@@ -32,7 +33,7 @@ namespace GraphProject.Tools.States
             }
         }
 
-        public void EndState()
+        public void ExitState()
         {
             _partSelector.DeselectVertices();
             _partSelector.DeselectEdges();

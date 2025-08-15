@@ -11,11 +11,12 @@ namespace GraphProject.Graphs.View
     [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D))]
     public class VertexDisplayObject : MonoBehaviour
     {
+        [Header("Настройки")]
+        [SerializeField] private Color _defaultColor = Color.black;
+        [SerializeField] private Color _selectedColor = Color.red;
+
         public VertexObjectData Data { get; private set; }
         public bool IsSelected { get; private set; }
-
-        public Color DefaultColor = Color.black;
-        public Color SelectedColor = Color.red;
 
         private SpriteRenderer _renderer;
 
@@ -39,20 +40,20 @@ namespace GraphProject.Graphs.View
             }
             labelText.text = data.ID.ToString();
             _renderer = GetComponent<SpriteRenderer>();
-            _renderer.color = DefaultColor;
+            _renderer.color = _defaultColor;
             IsSelected = false;
         }
 
         public void Select()
         {
             IsSelected = true;
-            _renderer.color = SelectedColor;
+            _renderer.color = _selectedColor;
         }
 
         public void Deselect()
         {
             IsSelected = false;
-            _renderer.color = DefaultColor;
+            _renderer.color = _defaultColor;
         }
     }
 }

@@ -11,15 +11,17 @@ namespace GraphProject.Graphs
     /// </summary>
     public class GraphView : MonoBehaviour
     {
-        [SerializeField]
-        private VertexDisplayObject _vertexPrefab;
+        [Header("Шаблоны объектов")]
+        [SerializeField] private VertexDisplayObject _vertexPrefab;
+        [SerializeField] private EdgeDisplayObject _edgePrefab;
 
-        [SerializeField]
-        private EdgeDisplayObject _edgePrefab;
+        // Методы для получения всех визуальных объектов (может понадобиться для сохранения).
+        public IReadOnlyDictionary<int, VertexDisplayObject> VertexObjects => _vertexObjects;
+        public IReadOnlyList<EdgeDisplayObject> EdgeObjects => _edgeObjects;
 
         // Словари для быстрого доступа к визуальным объектам по их ID.
-        private Dictionary<int, VertexDisplayObject> _vertexObjects = new Dictionary<int, VertexDisplayObject>();
-        private List<EdgeDisplayObject> _edgeObjects = new List<EdgeDisplayObject>();
+        private readonly Dictionary<int, VertexDisplayObject> _vertexObjects = new();
+        private readonly List<EdgeDisplayObject> _edgeObjects = new();
 
         private GraphModel _model;
 
@@ -35,12 +37,6 @@ namespace GraphProject.Graphs
             _model.OnVertexAdded += HandleVertexAdded;
             _model.OnEdgeAdded += HandleEdgeAdded;
             _model.OnGraphCleared += HandleGraphCleared;
-
-            if (_vertexPrefab == null)
-                _vertexPrefab = Resources.Load<VertexDisplayObject>("Prefabs/DefaultVertex");
-
-            if (_edgePrefab == null)
-                _edgePrefab = Resources.Load<EdgeDisplayObject>("Prefabs/DefaultEdge");
         }
 
         // Отписываемся от событий при уничтожении объекта, чтобы избежать утечек памяти.
@@ -104,9 +100,5 @@ namespace GraphProject.Graphs
                 edge.Data.FirstVertexID == firstID && edge.Data.SecondVertexID == secondID ||
                 edge.Data.FirstVertexID == secondID && edge.Data.SecondVertexID == firstID);
         }
-
-        // Методы для получения всех визуальных объектов (может понадобиться для сохранения).
-        public IReadOnlyCollection<VertexDisplayObject> GetAllVertexObjects() => _vertexObjects.Values;
-        public IReadOnlyList<EdgeDisplayObject> GetAllEdgeObjects() => _edgeObjects;
     }
 }
