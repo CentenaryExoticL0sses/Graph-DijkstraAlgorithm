@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using GraphProject.Graphs;
+using GraphProject.Graphs.View;
 
 namespace GraphProject.Tools.States
 {
@@ -26,7 +27,7 @@ namespace GraphProject.Tools.States
             _partSelector.SelectVertex(position);
             if (_partSelector.SelectedVertices.Count >= 2)
             {
-                List<int> path = _graphController.FindShortestPath(_partSelector.SelectedVertices[0].Data.ID, _partSelector.SelectedVertices[1].Data.ID);
+                List<int> path = _graphController.FindShortestPath(_partSelector.SelectedVertices[0], _partSelector.SelectedVertices[1]);
                 SelectPath(path);
             }
         }

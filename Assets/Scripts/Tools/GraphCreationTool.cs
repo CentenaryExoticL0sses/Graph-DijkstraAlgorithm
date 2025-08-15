@@ -18,7 +18,7 @@ namespace GraphProject.Tools
         public void Initialize(GraphController graphController)
         {
             _creationState = null;
-            _partSelector = new GraphPartSelector();
+            _partSelector = new GraphPartSelector(graphController);
             _graphController = graphController;
 
         }

@@ -25,7 +25,7 @@ namespace GraphProject.Tools.States
             _partSelector.SelectVertex(position);
             if (_partSelector.SelectedVertices.Count >= 2)
             {
-                var edge = _graphController.CreateEdge(_partSelector.SelectedVertices[0].Data.ID, _partSelector.SelectedVertices[1].Data.ID);
+                var edge = _graphController.CreateEdge(_partSelector.SelectedVertices[0], _partSelector.SelectedVertices[1]);
                 _partSelector.SelectEdge(edge);
             }
         }

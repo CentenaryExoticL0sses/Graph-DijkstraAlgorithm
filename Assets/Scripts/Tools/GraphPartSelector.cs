@@ -1,6 +1,7 @@
-﻿using GraphProject.Graphs.View;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using GraphProject.Graphs;
+using GraphProject.Graphs.View;
 
 namespace GraphProject.Tools
 {
@@ -9,17 +10,20 @@ namespace GraphProject.Tools
     /// </summary>
     public class GraphPartSelector
     {
-        public IReadOnlyList<VertexDisplayObject> SelectedVertices => _selectedVertices;
+        public IReadOnlyList<int> SelectedVertices => _selectedVertices;
 
-        public IReadOnlyList<EdgeDisplayObject> SelectedEdges => _selectedEdges;
+        public IReadOnlyList<(int, int)> SelectedEdges => _selectedEdges;
 
-        private readonly List<VertexDisplayObject> _selectedVertices;
-        private readonly List<EdgeDisplayObject> _selectedEdges;
+        private readonly GraphController _graphController;
 
-        public GraphPartSelector()
+        private readonly List<int> _selectedVertices;
+        private readonly List<(int, int)> _selectedEdges;
+
+        public GraphPartSelector(GraphController controller)
         {
-            _selectedVertices = new List<VertexDisplayObject>();
-            _selectedEdges = new List<EdgeDisplayObject>();
+            _graphController = controller;
+            _selectedVertices = new List<int>();
+            _selectedEdges = new List<(int FirstId, int SecondId)>();
         }
 
         //Получение вершины по нажатию на неё
@@ -28,8 +32,7 @@ namespace GraphProject.Tools
             var hit = Physics2D.Raycast(position, Vector2.zero);
             if (hit.collider != null)
             {
-                VertexDisplayObject vertex;
-                if (hit.collider.TryGetComponent(out vertex))
+                if (hit.collider.TryGetComponent(out VertexDisplayObject vertex))
                 {
                     return vertex;
                 }
@@ -37,7 +40,7 @@ namespace GraphProject.Tools
             return null;
         }
 
-        //Выделение вершины
+        ///Выделение вершины
         public void SelectVertex(Vector2 position)
         {
             var vertex = GetVertexAtPosition(position);
@@ -46,29 +49,33 @@ namespace GraphProject.Tools
 
         public void SelectVertex(VertexDisplayObject vertex)
         {
-            if (vertex != null)
+            if (vertex)
             {
                 vertex.Select();
-                _selectedVertices.Add(vertex);
+                _selectedVertices.Add(vertex.Data.ID);
             }
         }
 
         //Выделение ребра
         public void SelectEdge(EdgeDisplayObject edge)
         {
-            if (edge != null)
+            if (edge)
             {
                 edge.Select();
-                _selectedEdges.Add(edge);
+                _selectedEdges.Add((edge.Data.FirstVertexID, edge.Data.SecondVertexID));
             }
         }
 
         //Сброс всех выделенных вершин
         public void DeselectVertices()
         {
-            foreach (var vertex in _selectedVertices)
+            foreach (var vertexId in _selectedVertices)
             {
-                vertex.Deselect();
+                VertexDisplayObject vertex = _graphController.GetVertexObject(vertexId);
+                if(vertex)
+                {
+                    vertex.Deselect();
+                }
             }
             _selectedVertices.Clear();
         }
@@ -76,9 +83,13 @@ namespace GraphProject.Tools
         //Сброс всех выделенных рёбер
         public void DeselectEdges()
         {
-            foreach (var edge in _selectedEdges)
+            foreach ((int FirstId, int SecondId) in _selectedEdges)
             {
-                edge.Deselect();
+                EdgeDisplayObject edge = _graphController.GetEdgeObject(FirstId, SecondId);
+                if (edge)
+                {
+                    edge.Deselect();
+                }
             }
             _selectedEdges.Clear();
         }
